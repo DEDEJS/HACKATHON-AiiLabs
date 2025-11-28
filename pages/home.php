@@ -10,7 +10,7 @@ $Connection = $Banco->conecta();
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Minha Conta | App Banco</title>
+    <title>Minha Conta | Aiia Bank</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
@@ -19,6 +19,7 @@ $Connection = $Banco->conecta();
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="shortcut icon" href="../img/logo_aiia.png" type="image/x-icon">
   </head>
   <body>
     <div class="overlay" id="overlay"></div>
@@ -26,7 +27,7 @@ $Connection = $Banco->conecta();
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="user-info-sidebar">
-          <div class="avatar">SC</div>
+          <div class="ph ph-user"></div>
           <strong><?php echo $_SESSION['Nome'];?></strong>
         </div>
         <i class="ph ph-x" id="close-menu"></i>
@@ -86,19 +87,19 @@ $Connection = $Banco->conecta();
 
       <section class="quick-actions">
         <div class="action-btn">
-          <div class="icon-box"><i class="ph ph-pix-logo"></i></div>
+          <div class="icon-box" onclick="window.location.href = 'pix.php'"><i class="ph ph-pix-logo"></i></div>
           <span>Área Pix</span>
         </div>
         <div class="action-btn">
           <div class="icon-box"><i class="ph ph-barcode"></i></div>
           <span>Pagar</span>
         </div>
-        <div class="action-btn">
+        <div class="action-btn" onclick="window.location.href = 'Transferir.php'">
           <div class="icon-box"><i class="ph ph-arrow-up-right"></i></div>
           <span>Transferir</span>
         </div>
         <div class="action-btn">
-          <div class="icon-box"><i class="ph ph-credit-card"></i></div>
+          <div class="icon-box"><i class="ph ph-credit-card" onclick="window.location.href = 'cartoes.php'"></i></div>
           <span>Cartões</span>
         </div>
       </section>
@@ -123,16 +124,16 @@ $Connection = $Banco->conecta();
       </section>
 
       <nav class="bottom-nav">
-        <a href="home.html" class="nav-item active"
+        <a href="home.php" class="nav-item active"
           ><i class="ph ph-house"></i><span>Início</span></a
         >
-        <a href="extrato.html" class="nav-item"
+        <a href="extrato.php" class="nav-item"
           ><i class="ph ph-receipt"></i><span>Extrato</span></a
         >
-        <a href="cartoes.html" class="nav-item"
+        <a href="cartoes.php" class="nav-item"
           ><i class="ph ph-cards"></i><span>Cartões</span></a
         >
-        <a href="ajustes.html" class="nav-item"
+        <a href="ajustes.php" class="nav-item"
           ><i class="ph ph-gear"></i><span>Ajustes</span></a
         >
       </nav>

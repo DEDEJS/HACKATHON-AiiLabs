@@ -27,7 +27,7 @@ include_once("PHP/Sessions/sessions.php");
         </p>
       </div>
 
-      <form class="form-area" method="post" action="#">
+      <form class="form-area" method="post" action="#" onsubmit="validateRegistration(event)">
         <div class="input-group">
           <label for="nome">Nome Completo</label>
           <input

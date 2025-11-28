@@ -6,19 +6,20 @@ include_once("../PHP/sessions/sessions.php");
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Empréstimos | App Banco</title>
+    <title>Empréstimos | Aiia Bank</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="shortcut icon" href="../img/logo_aiia.png" type="image/x-icon">
   </head>
   <body>
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="user-info-sidebar">
-          <div class="avatar">SC</div>
+          <div class="ph ph-user"></div>
           <strong><?php echo $_SESSION['Nome'];?></strong>
         </div>
         <i class="ph ph-x" id="close-menu"></i>
@@ -120,16 +121,16 @@ include_once("../PHP/sessions/sessions.php");
       </div>
 
       <nav class="bottom-nav">
-        <a href="home.html" class="nav-item"
+        <a href="home.php" class="nav-item"
           ><i class="ph ph-house"></i><span>Início</span></a
         >
-        <a href="extrato.html" class="nav-item"
+        <a href="extrato.php" class="nav-item"
           ><i class="ph ph-receipt"></i><span>Extrato</span></a
         >
-        <a href="cartoes.html" class="nav-item"
+        <a href="cartoes.php" class="nav-item"
           ><i class="ph ph-cards"></i><span>Cartões</span></a
         >
-        <a href="ajustes.html" class="nav-item"
+        <a href="ajustes.php" class="nav-item"
           ><i class="ph ph-gear"></i><span>Ajustes</span></a
         >
       </nav>

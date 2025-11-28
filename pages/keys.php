@@ -7,28 +7,25 @@ $Connection = $Banco->conecta();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Área Pix | App Banco</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <title>Minhas Chaves | Aiia Bank</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="../css/style.css">
-  </head>
-  <body>
+    <link rel="shortcut icon" href="../img/logo_aiia.png" type="image/x-icon">
+</head>
+<body>
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="user-info-sidebar">
-          <div class="avatar">SC</div>
+          <div class="ph ph-user"></div>
           <strong><?php echo $_SESSION['Nome'];?></strong>
         </div>
         <i class="ph ph-x" id="close-menu"></i>
       </div>
-
-      <<nav class="sidebar-nav">
+      <nav class="sidebar-nav">
         <a href="home.php"><i class="ph ph-house"></i> Início</a>
         <a href="extrato.php"><i class="ph ph-receipt"></i> Extrato</a>
         <a href="pix.php"><i class="ph ph-pix-logo"></i> Área Pix</a>
@@ -54,75 +51,36 @@ $Connection = $Banco->conecta();
     </aside>
 
     <div class="app-container">
-      <header class="app-header" style="padding-bottom: 2rem">
-        <div class="header-left">
-          <i
-            class="ph ph-list"
-            id="open-menu"
-            style="font-size: 2rem; cursor: pointer; margin-right: 15px"
-          ></i>
-          <h2>Área Pix</h2>
-        </div>
-        <i class="ph ph-qr-code"></i>
-      </header>
+        <header class="app-header" style="padding-bottom: 2rem">
+            <div class="header-left header-with-back">
+                <a href="pix.php" class="back-btn"><i class="ph ph-arrow-left"></i></a>
+                <h2>Minhas Chaves</h2>
+            </div>
+            <i class="ph ph-key"></i>
+        </header>
 
-      <div class="pix-grid" style="margin-top: 1.5rem">
-        <div class="pix-btn">
-          <i class="ph ph-paper-plane-tilt"></i>
-          <span><a href="Transferir.php">Transferir</a></span>
+        <div style="margin: 1.5rem 1.5rem 2rem 1.5rem;">
+            <button class="btn-primary" style="margin: 0; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <i class="ph ph-plus"></i> Cadastrar Nova Chave
+            </button>
         </div>
-        <div class="pix-btn">
-          <i class="ph ph-copy"></i>
-          <span>Copia e Cola</span>
-        </div>
-        <div class="pix-btn">
-          <i class="ph ph-qr-code"></i>
-          <span>Ler QR Code</span>
-        </div>
-        <div class="pix-btn">
-          <i class="ph ph-key"></i>
-          <span><a href="keys.php">Minhas Chaves</a></span>
-        </div>
-        <div class="pix-btn">
-          <i class="ph ph-arrow-counter-clockwise"></i>
-          <span>Devolução</span>
-        </div>
-        <div class="pix-btn">
-          <i class="ph ph-question"></i>
-          <span>Ajuda</span>
-        </div>
-      </div>
 
-      <section class="transactions-section">
-        <div class="section-header">
-          <h2>Suas Chaves</h2>
-        </div>
-        <div class="transaction-list">
-                    <?php $Transactions->GetKeysUser($Connection,$SessionUser); ?>
+        <section class="transactions-section">
+            <div class="section-header">
+                <h2>Chaves Cadastradas</h2>
+            </div>
+            
+            <div class="transaction-list">
+                <?php 
+                    // Envolvi em um try/catch visual caso dê erro no PHP deles
+                    if(isset($Transactions)) {
+                        $Transactions->GetKeysUser($Connection,$SessionUser); 
+                    }
+                ?>
+            </div>
+        </section>
 
         </div>
-      </section>
-
-      <nav class="bottom-nav">
-        <a href="home.html" class="nav-item active"
-          ><i class="ph ph-house"></i><span>Início</span></a
-        >
-        <a href="extrato.html" class="nav-item"
-          ><i class="ph ph-receipt"></i><span>Extrato</span></a
-        >
-        <a href="cartoes.html" class="nav-item"
-          ><i class="ph ph-cards"></i><span>Cartões</span></a
-        >
-        <a href="ajustes.html" class="nav-item"
-          ><i class="ph ph-gear"></i><span>Ajustes</span></a
-        >
-      </nav>
-    </div>
     <script src="../js/script.js"></script>
-    <script>
-      // Script rápido para preencher o Sidebar (se você não quiser copiar e colar manualmente em todos,
-      // mas o ideal é copiar o HTML do menu para garantir)
-      // O código principal está em ../js/script.js
-    </script>
-  </body>
+</body>
 </html>

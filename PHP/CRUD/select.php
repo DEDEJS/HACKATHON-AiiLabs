@@ -1,5 +1,8 @@
 <?php
 class Check{
+    public $EmailTransaction;
+    public $PhoneTransaction;
+    public $Dados;
     public function CheckEmail($Connection,$Email){
        if($Email){
           $SQLEMAIL = "SELECT email FROM userdata WHERE Email = :Email LIMIT 1";
@@ -36,31 +39,67 @@ class Check{
       } else {return true;}
          }
     }
-    public function CheckBalance($Connection, $KeyValue,$ID,$Type,$KeyPix){
-             if($KeyValue){
-                $SQLVALUEBALANCE = "SELECT Id, Email, Phone  FROM userdata WHERE Id = :ID";
-                $SQLVALUEBALANCE = $Connection->prepare($SQLVALUEBALANCE);
-                $SQLVALUEBALANCE->bindParam(':ID', $ID, PDO::PARAM_STR);
-                $SQLVALUEBALANCE->Execute();
-                $DadoEncontrado = $SQLVALUEBALANCE->fetch(PDO::FETCH_ASSOC);
-                if($Type == "Email"){
-                     if($DadoEncontrado['Email'] == $KeyPix){
-                        echo "Email Inválido, Você Não Pode Enviar Para Voce Mesmo";
-                        return false;
-                     }else{
-                      return true;
-                     }
-                }else if($Type == "Phone"){
-                    if($DadoEncontrado['Phone'] == $KeyPix){
-                      echo "Telefone Inválido, Você Não Pode Enviar Para Voce Mesmo";
-                      return false;
-                    }else{
-                        return true;
-                    }
+
+     public function CheckEmailAndPhone($Connection, $KeyValue, $ID, $Type, $KeyPix){
+            if(!$KeyValue){
+                return false;
+            }
+            $SQLSELF = "SELECT Id, Email, Phone FROM userdata WHERE Id = :ID";
+            $querySelf = $Connection->prepare($SQLSELF);
+            $querySelf->bindParam(':ID', $ID, PDO::PARAM_INT);
+            $querySelf->execute();
+            $SelfData = $querySelf->fetch(PDO::FETCH_ASSOC);
+
+            if(!$SelfData){
+                echo "Erro ao verificar usuário atual.";
+                return false;
+            }
+            if($Type == "Email"){
+                if($SelfData['Email'] === $KeyPix){
+                    echo "Email inválido. Você não pode enviar para você mesmo.";
+                    return false;
                 }
-                  
-             }
-    }
+            } elseif ($Type == "Phone"){
+                if($SelfData['Phone'] === $KeyPix){
+                    echo "Telefone inválido. Você não pode enviar para você mesmo.";
+                    return false;
+                }
+            }
+            $SQLFIND = "SELECT Id, Email, Phone 
+                        FROM userdata 
+                        WHERE (Email = :pix OR Phone = :pix)
+                        AND Id != :ID";
+
+            $queryFind = $Connection->prepare($SQLFIND);
+            $queryFind->bindParam(':pix', $KeyPix, PDO::PARAM_STR);
+            $queryFind->bindParam(':ID', $ID, PDO::PARAM_INT);
+            $queryFind->execute();
+            $UserFound = $queryFind->fetch(PDO::FETCH_ASSOC);
+
+            if(!$UserFound){
+                echo "Chave PIX não encontrada.";
+                return false;
+            }
+
+            if($Type == "Email"){
+                $this->EmailTransaction = true;
+            } elseif ($Type == "Phone") {
+                $this->PhoneTransaction = true;
+            }
+            return $this->Dados = $UserFound;
+}
+
+
+          public function Retorn(){
+              if($this->PhoneTransaction == true){
+
+                return $this->Dados;
+              }else if($this->EmailTransaction == true){
+                return $this->Dados;
+              }else{
+                return false;
+              }
+          }
     
 }
 $CheckSelect = new Check();
@@ -136,6 +175,97 @@ class Transations{
         }
     }
     }
+   public function AlteraBalance($Connection, $CheckSelect, $KeyValue, $ID)
+{
+    // 1. Buscar usuário recebedor (já validado no CheckSelect)
+    $Recebedor = $CheckSelect->Retorn();
+    if (!$Recebedor) {
+        echo "Erro: chave PIX inválida.";
+        return false;
+    }
+
+    $RecebedorID = $Recebedor['Id']; 
+
+    try {
+        $Connection->beginTransaction();
+
+        $SQLSender = "SELECT Balance FROM accounts WHERE UserDataId = :ID FOR UPDATE";
+        $QuerySender = $Connection->prepare($SQLSender);
+        $QuerySender->bindParam(':ID', $ID, PDO::PARAM_INT);
+        $QuerySender->execute();
+        $SenderData = $QuerySender->fetch(PDO::FETCH_ASSOC);
+
+        if (!$SenderData) {
+            echo "Erro: conta do remetente não encontrada.";
+            $Connection->rollBack();
+            return false;
+        }
+
+        $SaldoRemetente = $SenderData['Balance'];
+
+        if ($SaldoRemetente < $KeyValue) {
+            echo "Saldo insuficiente.";
+            $Connection->rollBack();
+            return false;
+        }
+
+        $SQLReceiver = "SELECT Balance FROM accounts WHERE UserDataId = :RID FOR UPDATE";
+        $QueryReceiver = $Connection->prepare($SQLReceiver);
+        $QueryReceiver->bindParam(':RID', $RecebedorID, PDO::PARAM_INT);
+        $QueryReceiver->execute();
+        $ReceiverData = $QueryReceiver->fetch(PDO::FETCH_ASSOC);
+
+        if (!$ReceiverData) {
+            echo "Erro: conta do recebedor não encontrada.";
+            $Connection->rollBack();
+            return false;
+        }
+
+        $SQLDebito = "UPDATE accounts 
+                      SET Balance = Balance - :valor 
+                      WHERE UserDataId = :ID";
+
+        $QueryDebito = $Connection->prepare($SQLDebito);
+        $QueryDebito->bindParam(':valor', $KeyValue);
+        $QueryDebito->bindParam(':ID', $ID);
+        $QueryDebito->execute();
+
+        $SQLCredito = "UPDATE accounts 
+                       SET Balance = Balance + :valor 
+                       WHERE UserDataId = :RID";
+
+        $QueryCredito = $Connection->prepare($SQLCredito);
+        $QueryCredito->bindParam(':valor', $KeyValue);
+        $QueryCredito->bindParam(':RID', $RecebedorID);
+        $QueryCredito->execute();
+
+        $SQLTransOut = "INSERT INTO transactions (AccountId, Type, Amount, Description)
+                        VALUES ((SELECT Id FROM accounts WHERE UserDataId = :ID),
+                                'PIX_OUT', :valor, 'PIX enviado')";
+        $QOut = $Connection->prepare($SQLTransOut);
+        $QOut->bindParam(':ID', $ID);
+        $QOut->bindParam(':valor', $KeyValue);
+        $QOut->execute();
+
+        $SQLTransIn = "INSERT INTO transactions (AccountId, Type, Amount, Description)
+                       VALUES ((SELECT Id FROM accounts WHERE UserDataId = :RID),
+                               'PIX_IN', :valor, 'PIX recebido')";
+        $QIn = $Connection->prepare($SQLTransIn);
+        $QIn->bindParam(':RID', $RecebedorID);
+        $QIn->bindParam(':valor', $KeyValue);
+        $QIn->execute();
+
+        $Connection->commit();
+        echo "PIX enviado com sucesso!";
+        return true;
+
+    } catch (PDOException $e) {
+        $Connection->rollBack();
+        echo "Erro na transação: " . $e->getMessage();
+        return false;
+    }
+}
+
         
 
 }

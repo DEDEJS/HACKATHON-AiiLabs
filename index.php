@@ -28,7 +28,7 @@ include_once("PHP/Sessions/sessions.php");
         <h1>Acesse sua conta</h1>
       </div>
 
-      <form class="form-area" onsubmit="validateLogin(event)" method="post" action="#">
+      <form class="form-area" method="post" action="#" onsubmit="validateRegistration(event)">
         <div class="input-group">
           <label for="cpf">CPF ou CNPJ</label>
           <input

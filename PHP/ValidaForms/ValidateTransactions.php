@@ -26,15 +26,16 @@ class ValueDisplayTransction {
        public $ValueTransaction;
      public function validateKey() {
         $Key = InputHandlerTransaction::get('Key');
-        $KeysArray = array("Email","Telefone");
+        $KeysArray = array("email","Phone");
             if($Key != $KeysArray[0] && $Key != $KeysArray[1]){
                echo 'Escolha Um Tipo De Chave';
+               
             }
     }
     public function ValidateKeyPix(){
          $KeyPix = InputHandlerTransaction::get('KeyPix');
          $Key = InputHandlerTransaction::get('Key');
-          if($Key == "Email"){
+          if($Key == "email"){
             if(strlen($Key) <= 0) {
                 echo "Preenche o Campo Email";
             } else if(!filter_var($KeyPix, FILTER_VALIDATE_EMAIL)) {
@@ -42,7 +43,7 @@ class ValueDisplayTransction {
             } else {
              $this->KeyEmail = $KeyPix;
             }
-          }else{
+          }else if($Key == "phone"){
              if(!preg_match("/^(\d{10}|\d{11})$/", $KeyPix)) {
                 echo "Telefone Inválido";
                
@@ -85,7 +86,8 @@ class ValueDisplayTransction {
       if($KeyPix != false && $KeyValue != false){
            include_once("../PHP/CRUD/select.php");
            $ID = $_SESSION['ID'];
-           $CheckSelect -> CheckBalance($Connection, $KeyValue,$ID,$Type,$KeyPix);
+           $CheckSelect -> CheckEmailAndPhone($Connection, $KeyValue,$ID,$Type,$KeyPix);
+           $Transactions-> AlteraBalance($Connection,$CheckSelect,$KeyValue,$ID);
       }else{
         echo 'falta';
       }
