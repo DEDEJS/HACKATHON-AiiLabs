@@ -1,0 +1,25 @@
+:root {
+  --bg-app: #0f0f12;
+  --bg-card: #1c1c24;
+  --primary: #8257e5;
+  --text-main: #ffffff;
+  --text-muted: #a1a1aa;
+  --green-income: #04d361;
+  --nav-height: 70px;
+}
+
+/* Reset Básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+}
+
+body {
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}

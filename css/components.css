@@ -1,0 +1,201 @@
+/* --- Card de Saldo --- */
+.balance-card {
+  background-color: var(--bg-card);
+  margin: -2rem 1.5rem 1.5rem 1.5rem;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.balance-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.balance-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.blur-content {
+  filter: blur(8px);
+  user-select: none;
+  transition: filter 0.3s;
+}
+
+/* --- Ações Rápidas --- */
+.quick-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  margin-bottom: 2rem;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.icon-box {
+  width: 60px;
+  height: 60px;
+  background-color: var(--bg-card);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--primary);
+  transition: background 0.2s;
+}
+
+.action-btn:hover .icon-box {
+  background-color: #2a2a35;
+}
+
+.action-btn span {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* --- Transações --- */
+.transactions-section {
+  padding: 0 1.5rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  font-size: 1.2rem;
+}
+
+.section-header a {
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  border-bottom: 1px solid #2a2a35;
+}
+
+.transaction-item:last-child {
+  border-bottom: none;
+}
+
+.t-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  margin-right: 1rem;
+}
+
+.t-icon.expense {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.t-icon.income {
+  background-color: rgba(4, 211, 97, 0.1);
+  color: var(--green-income);
+}
+
+.t-icon.service {
+  background-color: rgba(130, 87, 229, 0.1);
+  color: var(--primary);
+}
+
+.t-details {
+  flex: 1;
+}
+
+.t-details strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+
+.t-details span {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.t-amount {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.t-amount.income {
+  color: var(--green-income);
+}
+
+/* --- Inputs & Search --- */
+.search-bar {
+  margin: 1rem 1.5rem;
+  background-color: #202024;
+  padding: 0.8rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-bar input {
+  background: transparent;
+  border: none;
+  color: white;
+  width: 100%;
+  outline: none;
+}
+
+/* --- Toggle Switch --- */
+.toggle-switch {
+  width: 40px;
+  height: 22px;
+  background-color: #323238;
+  border-radius: 11px;
+  position: relative;
+  cursor: pointer;
+}
+
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.toggle-switch.on {
+  background-color: var(--green-income);
+}
+
+.toggle-switch.on::after {
+  transform: translateX(18px);
+}

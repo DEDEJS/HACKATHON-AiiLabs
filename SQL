@@ -1,0 +1,58 @@
+CREATE TABLE UserData (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Email VARCHAR(255) NOT NULL,
+    PasswordHash VARCHAR(255) NOT NULL,
+    Name VARCHAR(70) NOT NULL,
+    Phone VARCHAR(25) NOT NULL,
+    DateOfBirth VARCHAR(10) NOT NULL,
+    AccountType ENUM('CPF', 'CNPJ') NOT NULL,
+    Document VARCHAR(50) NOT NULL,
+    AccountDocument varchar(40) NOT NULL,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT uq_email UNIQUE (Email)
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+
+    CREATE TABLE UserLogin (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    UserDataId INT NOT NULL,
+    LastLogin TIMESTAMP NULL,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_userdata FOREIGN KEY (UserDataId) REFERENCES UserData(Id)
+) ENGINE=InnoDB
+  DEFAULT CHARSET=utf8mb4
+  COLLATE=utf8mb4_unicode_ci;
+
+  CREATE TABLE Accounts (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    UserDataId INT NOT NULL,
+    Balance DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (UserDataId) REFERENCES UserData(Id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+  CREATE TABLE Transactions (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    AccountId INT NOT NULL,
+    Type ENUM('DEPOSIT', 'PIX_IN', 'PIX_OUT', 'TRANSFER_IN', 'TRANSFER_OUT', 'FEE') NOT NULL,
+    Amount DECIMAL(10,2) NOT NULL,
+    Description VARCHAR(255) NULL,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (AccountId) REFERENCES Accounts(Id)
+); -- PIX_IN PIX recebido PIX_OUT PIX enviado TRANSFER_IN Transferência recebida de outra conta interna do próprio sistema TRANSFER_OUT Transferência enviada para outra conta interna do sistema FEE Taxa cobrada
+
+CREATE TABLE `hackathonaiilabs`.`keyspix` (
+    `id` INT(10) NOT NULL AUTO_INCREMENT,
+    `Type` ENUM('EMAIL','PHONE') NOT NULL,
+     Value  VARCHAR(255) CHARACTER SET armscii8 COLLATE armscii8_general_ci NOT NULL,
+    `IDUser` INT(10) NOT NULL,
+    `Hora` DATETIME(6) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE (`Value`),
+    FOREIGN KEY (`IDUser`) REFERENCES `UserData`(`Id`)
+) ENGINE=InnoDB;

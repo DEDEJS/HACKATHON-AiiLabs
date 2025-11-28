@@ -1,0 +1,7 @@
+/* style.css - O gerenciador de estilos */
+@import url('variables.css');
+@import url('layout.css');
+@import url('components.css');
+@import url('pages.css');
+@import url('theme-light.css');
+@import url('login.css');

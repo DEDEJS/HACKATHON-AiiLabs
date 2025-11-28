@@ -1,0 +1,152 @@
+/* css/login.css */
+
+/* --- Estilos Base do Login (Dark Mode / Padrão) --- */
+body.login-page {
+    /* Fundo degradê escuro */
+    background: linear-gradient(135deg, #000000 30%, var(--primary) 150%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 2.5rem;
+    background: rgba(20, 20, 24, 0.6); /* Vidro escuro */
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeUp 0.5s ease;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.logo-area { display: flex; flex-direction: column; align-items: center; margin-bottom: 3rem; }
+.logo-area img { width: 80px; margin-bottom: 1rem; }
+.logo-area h1 { font-size: 1.5rem; color: var(--text-main); font-weight: 700; }
+
+.form-area { width: 100%; }
+
+/* --- INPUTS (Estava faltando aqui) --- */
+.input-group { 
+    margin-bottom: 1.5rem; 
+    position: relative; 
+}
+
+.input-group label { 
+    display: block; 
+    color: var(--text-muted); 
+    font-size: 0.85rem; 
+    margin-bottom: 0.5rem; 
+}
+
+.input-field {
+    width: 100%;
+    background-color: var(--bg-card); /* Fundo do input */
+    border: 1px solid #323238;        /* Borda sutil */
+    color: var(--text-main);          /* Cor do texto digitado */
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.input-field:focus {
+    border-color: var(--primary);     /* Foco roxo */
+}
+
+.input-field::placeholder {
+    color: #555; /* Placeholder mais discreto */
+}
+
+/* --- BOTÃO (Estava faltando aqui) --- */
+.btn-primary {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 0.2s;
+    margin-top: 1rem;
+}
+
+.btn-primary:hover {
+    filter: brightness(0.9);
+}
+
+/* --- Links e Erros --- */
+.links { margin-top: 2rem; text-align: center; }
+.links p { color: var(--text-muted); font-size: 0.9rem; }
+.links a { color: var(--primary); font-weight: 700; text-decoration: none; }
+.links a:hover { text-decoration: underline; }
+
+.error-msg { color: #ff4757; font-size: 0.8rem; margin-top: 0.3rem; display: block; }
+.input-group.error .input-field { border-color: #ff4757; }
+.input-group.error .error-msg { display: block; }
+
+
+/* --- TEMA CLARO PARA O LOGIN --- */
+body.light-mode.login-page {
+    /* Fundo degradê claro: Cinza suave -> Roxo muito claro */
+    background: linear-gradient(135deg, #f0f2f5 30%, #e6e6fa 150%);
+}
+
+body.light-mode .login-container {
+    background: rgba(255, 255, 255, 0.75); /* Vidro claro */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+
+/* Ajustes de cores para o modo claro */
+body.light-mode .logo-area h1 { color: #121214; }
+body.light-mode .links p { color: #737380; }
+
+/* Inputs no Modo Claro */
+body.light-mode .input-field {
+    background-color: #ffffff;  /* Fundo branco */
+    border: 1px solid #d1d1d6;  /* Borda cinza clara */
+    color: #121214;             /* Texto preto */
+}
+
+body.light-mode .input-field:focus {
+    border-color: var(--primary);
+    background-color: #fff;
+}
+
+/* --- Lógica de Troca de Logo (Login) --- */
+
+/* 1. Comportamento Padrão (Modo Escuro) */
+#logo-light {
+    display: none; /* Esconde a logo clara */
+}
+#logo-dark {
+    display: block; /* Mostra a logo padrão (branca/roxa) */
+}
+
+/* 2. Comportamento quando o Body tem 'light-mode' */
+body.light-mode #logo-light {
+    display: block; /* Aparece a logo escura */
+}
+body.light-mode #logo-dark {
+    display: none; /* Esconde a logo padrão */
+}
+
+/* Ajuste de tamanho para garantir que ambas fiquem iguais */
+.top-logo {
+    width: 80px; 
+    margin-bottom: 1rem;
+}
